@@ -1,0 +1,51 @@
+﻿[dotenv@17.3.0] injecting env (6) from .env.local -- tip: ­ƒøí´©Å auth for agents: https://vestauth.com
+Insertando caba├▒as de prueba en Firestore...
+Configuraci├│n de Firebase usada: {
+  projectId: 'reservas-por-fecha',
+  authDomain: 'reservas-por-fecha.firebaseapp.com'
+}
+Intentando insertar Refugio del Bosque...
+npx : [2026-02-12T22:
+19:02.739Z]  
+@firebase/firestore: 
+Firestore (12.9.0): 
+GrpcConnection RPC 
+'Write' stream 
+0x71dc0b76 error. 
+Code: 7 Message: 7 
+PERMISSION_DENIED: 
+Missing or 
+insufficient 
+permissions.
+En línea: 1 
+Carácter: 1
++ npx tsx seed.ts > 
+seed_output.txt 2>&1
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: ([2026-0   
+ 2-12T22:...nt pe    
+rmissions.:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+Error al insertar 
+caba├▒as: 
+[FirebaseError: 7 
+PERMISSION_DENIED: 
+Missing or 
+insufficient 
+permissions.] {
+  code: 
+'permission-denied',
+  customData: 
+undefined,
+  toString: 
+[Function 
+(anonymous)]
+}

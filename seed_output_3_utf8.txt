@@ -1,0 +1,14 @@
+﻿[dotenv@17.3.0] injecting env (6) from .env.local -- tip: ÔÜí´©Å secrets for agents: https://dotenvx.com/as2
+Insertando caba├▒as de prueba en Firestore...
+Configuraci├│n de Firebase usada: {
+  projectId: 'reservas-por-fecha',
+  authDomain: 'reservas-por-fecha.firebaseapp.com'
+}
+Intentando insertar Refugio del Bosque...
+Ô£ô Refugio del Bosque ÔÇö ID: xdjhqP0XfQP0rMMDOFNI
+Intentando insertar Mirador del Lago...
+Ô£ô Mirador del Lago ÔÇö ID: 9rvOLei0tYIVIsjQQk73
+Intentando insertar Caba├▒a de Piedra...
+Ô£ô Caba├▒a de Piedra ÔÇö ID: XoZKJcJsCdHBq7rDZzY4
+
+┬íListo! 3 caba├▒as insertadas en Firestore.

@@ -1,0 +1,19 @@
+kind: "AppHostingYaml"
+schemaVersion: "v1"
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+maxInstances: 10
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: "AIzaSyDrfj3oeOkLdapzHk4rguv-16DAuyyml6E"
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: "reservas-por-fecha.firebaseapp.com"
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: "reservas-por-fecha"
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: "reservas-por-fecha.firebasestorage.app"
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "859523977617"
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:859523977617:web:c651e148faab68447bca30"

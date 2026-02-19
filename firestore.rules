@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Perfiles de usuario: solo el dueño puede leer/escribir su propio perfil
+    match /profiles/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Cabañas: lectura pública, escritura bloqueada
+    match /cabins/{cabinId} {
+      allow read: if true;
+      allow write: if false; 
+    }
+    
+    // Reservas: permitir lectura pública para ver disponibilidad, pero solo el dueño puede modificar
+    match /bookings/{bookingId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && resource.data.user_id == request.auth.uid;
+    }
+  }
+}
