@@ -129,7 +129,7 @@ export default function Home() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-cabañas.jpg"
+            src="/hero-cabanas.jpg"
             alt="Quintas y Casas de Verano Mendoza"
             fill
             className="object-cover brightness-50"
