@@ -5,6 +5,8 @@ export type Cabin = {
   price_per_night: number;
   image_urls: string[];
   created_at: any;
+  location?: string;
+  capacity?: string;
 };
 
 export type Profile = {
@@ -12,6 +14,8 @@ export type Profile = {
   full_name: string;
   dni_number: string;
   avatar_url: string;
+  is_admin?: boolean;
+  created_at?: any;
 };
 
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'pending_payment' | 'pending_transfer';

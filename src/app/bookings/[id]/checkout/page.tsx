@@ -40,7 +40,7 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
         data.depositAmount = 0;
 
         if (data.startDate && data.endDate && isValid(data.startDate) && isValid(data.endDate)) {
-          data.nights = Math.max(0, differenceInDays(data.endDate, data.startDate));
+          data.nights = differenceInDays(data.endDate, data.startDate) + 1;
           data.totalPrice = data.nights * (data.cabins?.price_per_night || 0);
           data.depositAmount = data.totalPrice * 0.25;
         }
@@ -53,20 +53,20 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
   }, [id]);
 
   const handlePayment = async () => {
-    setProcessing(true);
-    
-    // Simulate payment processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    try {
-      const newStatus = selectedMethod === "transfer" ? "pending_transfer" : "confirmed";
-      await updateBookingStatus(id, newStatus);
-      router.push(`/bookings/${id}/confirmation`);
-    } catch (error) {
-      console.error("Error updating booking status:", error);
-      alert("Hubo un error al procesar el pago. Por favor intenta de nuevo.");
-    } finally {
-      setProcessing(false);
+    if (selectedMethod === "transfer") {
+      setProcessing(true);
+      try {
+        await updateBookingStatus(id, "pending_transfer");
+        router.push(`/bookings/${id}/confirmation`);
+      } catch (error) {
+        console.error("Error updating booking status:", error);
+        alert("Hubo un error al procesar el pago. Por favor intenta de nuevo.");
+      } finally {
+        setProcessing(false);
+      }
+    } else {
+      // Redirigir a la simulación interactiva de Mercado Pago
+      router.push(`/bookings/${id}/checkout/mercadopago?method=${selectedMethod}`);
     }
   };
 
@@ -185,13 +185,13 @@ export default function CheckoutPage({ params }: { params: Promise<{ id: string 
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900 leading-tight mb-1">{booking.cabins?.name}</h3>
-                  <p className="text-sm text-gray-500">Valle de los Pinos</p>
+                  <p className="text-sm text-gray-500">{booking.cabins?.location || "Mendoza, Argentina"}</p>
                 </div>
               </div>
 
               <div className="space-y-4 border-t pt-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Estadía ({booking.nights} noches)</span>
+                  <span className="text-gray-500">Estadía ({booking.nights} {booking.nights === 1 ? "día" : "días"})</span>
                   <span className="text-gray-900">${booking.totalPrice.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm text-green-600 font-medium">

@@ -21,8 +21,8 @@ export default function BookingConfirmationPage({ params }: { params: Promise<{ 
         data.totalPrice = 0;
 
         if (data.startDate && data.endDate && isValid(data.startDate) && isValid(data.endDate)) {
-          const nights = Math.max(0, differenceInDays(data.endDate, data.startDate));
-          data.totalPrice = nights * (data.cabins?.price_per_night || 0);
+          const days = differenceInDays(data.endDate, data.startDate) + 1;
+          data.totalPrice = days * (data.cabins?.price_per_night || 0);
         }
         setBooking(data);
       }
@@ -111,7 +111,7 @@ export default function BookingConfirmationPage({ params }: { params: Promise<{ 
                   <h3 className="text-2xl font-serif mb-2">{booking.cabins.name}</h3>
                   <div className="flex items-center gap-2 text-gray-500">
                     <MapPin size={16} />
-                    <span>Valle de los Pinos, Argentina</span>
+                    <span>{booking.cabins?.location || "Mendoza, Argentina"}</span>
                   </div>
                 </div>
 

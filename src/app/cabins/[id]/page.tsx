@@ -143,10 +143,10 @@ export default function CabinDetailPage({ params }: { params: Promise<{ id: stri
               <h1 className="text-4xl md:text-5xl font-serif mb-4">{cabin.name}</h1>
               <div className="flex flex-wrap gap-4 text-gray-600">
                 <span className="flex items-center gap-2">
-                  <MapPin size={18} /> Valle de los Pinos, Argentina
+                  <MapPin size={18} /> {cabin.location || "Mendoza, Argentina"}
                 </span>
                 <span className="flex items-center gap-2">
-                  <Users size={18} /> 4 huéspedes
+                  <Users size={18} /> {cabin.capacity || "Ideal para cumpleaños y eventos"}
                 </span>
               </div>
             </div>

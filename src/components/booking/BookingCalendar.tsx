@@ -28,11 +28,13 @@ export default function BookingCalendar({ pricePerNight, bookedRanges, onBooking
     );
   };
 
-  const numberOfNights = selectedRange?.from && selectedRange?.to 
-    ? Math.ceil((selectedRange.to.getTime() - selectedRange.from.getTime()) / (1000 * 60 * 60 * 24))
+  const numberOfDays = selectedRange?.from
+    ? selectedRange.to
+      ? Math.round((selectedRange.to.getTime() - selectedRange.from.getTime()) / (1000 * 60 * 60 * 24)) + 1
+      : 1
     : 0;
 
-  const totalPrice = numberOfNights * pricePerNight;
+  const totalPrice = numberOfDays * pricePerNight;
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
@@ -62,7 +64,7 @@ export default function BookingCalendar({ pricePerNight, bookedRanges, onBooking
         />
       </div>
 
-      {selectedRange?.from && selectedRange?.to && (
+      {selectedRange?.from && (
         <div className="border-t pt-6 space-y-4">
           <div className="flex justify-between text-gray-600">
             <span>Check-in</span>
@@ -70,10 +72,10 @@ export default function BookingCalendar({ pricePerNight, bookedRanges, onBooking
           </div>
           <div className="flex justify-between text-gray-600">
             <span>Check-out</span>
-            <span className="font-medium text-gray-900">{format(selectedRange.to, "PPP", { locale: es })}</span>
+            <span className="font-medium text-gray-900">{format(selectedRange.to || selectedRange.from, "PPP", { locale: es })}</span>
           </div>
           <div className="flex justify-between text-gray-600">
-            <span>${pricePerNight} x {numberOfNights} noches</span>
+            <span>${pricePerNight} x {numberOfDays} {numberOfDays === 1 ? "día" : "días"}</span>
             <span className="font-medium text-gray-900">${totalPrice}</span>
           </div>
           <hr />
@@ -83,7 +85,10 @@ export default function BookingCalendar({ pricePerNight, bookedRanges, onBooking
           </div>
 
           <button
-            onClick={() => onBookingConfirm(selectedRange)}
+            onClick={() => onBookingConfirm({
+              from: selectedRange.from,
+              to: selectedRange.to || selectedRange.from
+            })}
             disabled={isLoading}
             className="w-full mt-4 flex items-center justify-center gap-2 py-4 bg-primary text-white rounded-xl font-medium transition-all hover:bg-opacity-95 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
           >

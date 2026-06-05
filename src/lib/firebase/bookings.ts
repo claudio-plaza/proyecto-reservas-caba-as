@@ -127,3 +127,51 @@ export async function getCabinById(id: string): Promise<any> {
   if (!cabinDoc.exists()) return null;
   return { id: cabinDoc.id, ...cabinDoc.data() };
 }
+
+export async function getAllBookings(): Promise<any[]> {
+  const q = query(
+    collection(db, "bookings"),
+    orderBy("created_at", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+  const bookings: any[] = [];
+
+  for (const bookingDoc of snapshot.docs) {
+    const d = bookingDoc.data();
+
+    // Fetch the cabin data
+    let cabin = null;
+    try {
+      const cabinDoc = await getDoc(doc(db, "cabins", d.cabin_id));
+      if (cabinDoc.exists()) {
+        cabin = { id: cabinDoc.id, ...cabinDoc.data() };
+      }
+    } catch (e) {
+      console.error("Error fetching cabin:", e);
+    }
+
+    // Fetch user profile data
+    let profile = null;
+    try {
+      const profileDoc = await getDoc(doc(db, "profiles", d.user_id));
+      if (profileDoc.exists()) {
+        profile = { id: profileDoc.id, ...profileDoc.data() };
+      }
+    } catch (e) {
+      console.error("Error fetching profile:", e);
+    }
+
+    bookings.push({
+      id: bookingDoc.id,
+      ...d,
+      startDate: d.startDate.toDate(),
+      endDate: d.endDate.toDate(),
+      created_at: d.created_at.toDate(),
+      cabin,
+      profile,
+    });
+  }
+
+  return bookings;
+}

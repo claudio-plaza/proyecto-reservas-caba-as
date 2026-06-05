@@ -1,6 +1,6 @@
 // Firebase seeding script — run with: npx tsx seed.ts
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, Timestamp } from "firebase/firestore";
 import * as dotenv from "dotenv";
 import path from "path";
 
@@ -26,42 +26,61 @@ const db = getFirestore(app);
 
 const cabins = [
   {
-    name: "Refugio del Bosque",
-    description: "Una cabaña acogedora rodeada de pinos centenarios, ideal para escapar de la ciudad.",
-    price_per_night: 120,
-    image_urls: ["https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070"],
+    name: "Quinta Vistalba - Cumpleaños & Eventos de Verano",
+    description: "Espectacular casa de verano en el corazón de Vistalba, Luján de Cuyo. Diseñada especialmente para pasar el día, festejar cumpleaños y disfrutar en familia. Cuenta con una amplia piscina con solárium, gran parque verde rodeado de viñedos, quincho cubierto con parrilla completa, vajilla y estacionamiento privado para invitados.",
+    price_per_night: 150,
+    image_urls: ["/imagen 2.png", "/cabaña con pileta.png", "/image 1.png"],
+    location: "Vistalba, Luján de Cuyo",
+    capacity: "Eventos hasta 30 personas",
     created_at: Timestamp.now(),
   },
   {
-    name: "Mirador del Lago",
-    description: "Vista panorámica al lago y todas las comodidades premium para una estancia inolvidable.",
-    price_per_night: 250,
-    image_urls: ["https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80&w=2070"],
-    created_at: Timestamp.now(),
-  },
-  {
-    name: "Cabaña de Piedra",
-    description: "Arquitectura clásica en piedra y madera con hogar a leña y jacuzzi privado.",
+    name: "Cabaña & Club de Campo Chacras",
+    description: "Exclusivo refugio de verano en Chacras de Coria. Ofrece un entorno natural inigualable rodeado de añejas arboledas, pileta de natación, amplio deck-solárium y una hermosa galería con churrasquera. Un espacio ideal para asados de cumpleaños y encuentros con amigos en las cálidas tardes mendocinas.",
     price_per_night: 180,
-    image_urls: ["https://images.unsplash.com/photo-1542718610-a1d656d1884c?q=80&w=2070"],
+    image_urls: ["/cabaña con pileta.png", "/cabaña moderna.png", "/image 1.png"],
+    location: "Chacras de Coria, Mendoza",
+    capacity: "Capacidad 10-25 personas",
+    created_at: Timestamp.now(),
+  },
+  {
+    name: "Casa Quinta San Rafael - Eventos & Piscina",
+    description: "Moderna casa quinta en San Rafael, Mendoza. Ofrece comodidades de primer nivel con una piscina increíble, quincho cerrado y climatizado para eventos de cumpleaños, churrasquera, cancha de fútbol y un amplio espacio verde con vistas espectaculares. El lugar ideal para crear recuerdos inolvidables.",
+    price_per_night: 220,
+    image_urls: ["/cabaña moderna.png", "/image 1.png", "/imagen 2.png"],
+    location: "San Rafael, Mendoza",
+    capacity: "Eventos y estadías (hasta 20 personas)",
     created_at: Timestamp.now(),
   },
 ];
 
+async function cleanCollection() {
+  console.log("Limpiando colección 'cabins' existente...");
+  const querySnapshot = await getDocs(collection(db, "cabins"));
+  for (const docSnapshot of querySnapshot.docs) {
+    await deleteDoc(doc(db, "cabins", docSnapshot.id));
+    console.log(`Eliminado documento: ${docSnapshot.id}`);
+  }
+  console.log("Colección limpiada.");
+}
+
 async function seed() {
-  console.log("Insertando cabañas de prueba en Firestore...");
+  console.log("Iniciando proceso de seeding en Firestore...");
   console.log("Configuración de Firebase usada:", {
     projectId: firebaseConfig.projectId,
     authDomain: firebaseConfig.authDomain
   });
 
   try {
+    await cleanCollection();
+    
+    console.log("Insertando cabañas de prueba en Firestore...");
     for (const cabin of cabins) {
       console.log(`Intentando insertar ${cabin.name}...`);
       const docRef = await addDoc(collection(db, "cabins"), cabin);
       console.log(`✓ ${cabin.name} — ID: ${docRef.id}`);
     }
-    console.log("\n¡Listo! 3 cabañas insertadas en Firestore.");
+    console.log("\n¡Listo! Cabañas mendocinas insertadas en Firestore.");
   } catch (error) {
     console.error("Error al insertar cabañas:", error);
   } finally {

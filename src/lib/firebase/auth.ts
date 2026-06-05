@@ -3,8 +3,9 @@ import {
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, getDocs, collection, query, orderBy } from "firebase/firestore";
 import { auth, db } from "./config";
+import { Profile } from "@/types";
 
 export async function signUp({
   email,
@@ -25,6 +26,7 @@ export async function signUp({
     full_name: name,
     dni_number: dni,
     avatar_url: "",
+    is_admin: false,
     created_at: new Date(),
   });
 
@@ -44,4 +46,22 @@ export async function signIn({
 
 export async function signOut() {
   await firebaseSignOut(auth);
+}
+
+export async function getUserProfile(uid: string): Promise<Profile | null> {
+  const docRef = doc(db, "profiles", uid);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() } as Profile;
+  }
+  return null;
+}
+
+export async function getAllProfiles(): Promise<Profile[]> {
+  const q = query(collection(db, "profiles"), orderBy("created_at", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as Profile[];
 }
